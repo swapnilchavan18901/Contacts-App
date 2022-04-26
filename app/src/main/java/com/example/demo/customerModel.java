@@ -1,14 +1,15 @@
 package com.example.demo;
 
 public class customerModel {
-    private int id;
-    private String name;
-    private String Phone;
+    public String name;
+    public int id;
+    public String Phone;
 
     public customerModel(int id, String name, String Phone) {
         this.id = id;
         this.name = name;
         this.Phone = Phone;
+
     }
 
 

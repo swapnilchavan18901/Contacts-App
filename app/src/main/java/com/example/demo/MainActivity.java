@@ -11,22 +11,27 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class MainActivity extends AppCompatActivity {
-Button btn_add;
-EditText ed_name,ed_Phone;
+    Button btn_add,search,viewAll;
+EditText ed_name,ed_Phone,searchBar;
 
 ListView listView;
 
-    @Override
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         btn_add=findViewById(R.id.btn_add);
-
+        search=findViewById(R.id.search);
+        searchBar=findViewById(R.id.searchBar);
         listView=findViewById(R.id.listview);
         ed_name=findViewById(R.id.ed_name);
         ed_Phone=findViewById(R.id.ed_phone);
+        viewAll=findViewById(R.id.viewAll);
         dataBasehelper dataBasehelper=new dataBasehelper(MainActivity.this);
         ShowCustomersOnListView(dataBasehelper);
 
@@ -35,28 +40,25 @@ ListView listView;
             @Override
             public void onClick(View v) {
                 customerModel customerModel;
-                try {
-                    customerModel=new customerModel(1,ed_name.getText().toString(),ed_Phone.getText().toString());
-
-                }
-                catch (Exception e){
-                    Toast.makeText(MainActivity.this, "Error Creating Customer", Toast.LENGTH_SHORT).show();
-                    customerModel=new customerModel(-1,"ERROR","0");
-                }
-                boolean success=dataBasehelper.ADDONE(customerModel);
-                if (success==true) {
-                    Toast.makeText(MainActivity.this, "succeeded in creating your contact", Toast.LENGTH_SHORT).show();
-
-                }
-                else {
-                    Toast.makeText(MainActivity.this, "Failed to create your contact", Toast.LENGTH_SHORT).show();
-                }
-                //showdatabase without refresh
+                customerModel=new customerModel(1,ed_name.getText().toString(),ed_Phone.getText().toString());
+               dataBasehelper.ADDONE(customerModel);
                 ShowCustomersOnListView(dataBasehelper);
             }
         });
 
-
+    search.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            List<customerModel> returnedSearchList=dataBasehelper.getEveryone();
+            searchList(searchBar.getText().toString(),returnedSearchList);
+        }
+    });
+    viewAll.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            ShowCustomersOnListView(dataBasehelper);
+        }
+    });
 
     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
         @Override
@@ -72,4 +74,17 @@ ListView listView;
         ArrayAdapter CustomerArrayAdapter = new ArrayAdapter<customerModel>(MainActivity.this,android.R.layout.simple_list_item_1, dataBasehelper.getEveryone());
         listView.setAdapter(CustomerArrayAdapter);
     }
+        private void searchList(String Name, List<customerModel> returnedSearchList){
+         List<customerModel> finallist=new ArrayList<>();
+         List<customerModel> finallist2=new ArrayList<>();
+                for (int i=0;i<returnedSearchList.size();i++){
+                    customerModel c= returnedSearchList.get(i);
+                        if (Name.equalsIgnoreCase(String.valueOf(c.name))) {
+                            finallist.add(c);
+                        }
+                }
+                    ArrayAdapter CustomerArrayAdapter = new ArrayAdapter<customerModel>(MainActivity.this,android.R.layout.simple_list_item_1,finallist);
+                    listView.setAdapter(CustomerArrayAdapter);
+    }
+
 }
