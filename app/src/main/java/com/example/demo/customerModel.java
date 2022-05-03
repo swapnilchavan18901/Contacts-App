@@ -2,7 +2,7 @@ package com.example.demo;
 
 public class customerModel {
     public String name;
-    public int id;
+    public static int id;
     public String Phone;
 
     public customerModel(int id, String name, String Phone) {
@@ -12,38 +12,15 @@ public class customerModel {
 
     }
 
-
-
-    @Override
-    public String toString() {
-        return
-                "Name= " + name +"   "+
-                "Phone=" + Phone;
-
-
-    }
-
-    public int getId() {
+    public static int getId() {
         return id;
     }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public String getName() {
         return name;
     }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getPhone() {
         return Phone;
     }
 
-    public void setPhone(String Phone) {
-        this.Phone = Phone;
-    }
+
 }

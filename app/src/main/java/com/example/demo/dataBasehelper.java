@@ -5,8 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.database.sqlite.SQLiteQueryBuilder;
-import android.widget.ListView;
 
 import androidx.annotation.Nullable;
 
@@ -58,11 +56,11 @@ public class dataBasehelper<DatabaseOpenHelper> extends SQLiteOpenHelper {
             return true;
         }
     }
-    public boolean deleteOne(customerModel customerModel){
+    public boolean deleteOne(int customerModelid){
         //to delete the selected database
 
 SQLiteDatabase db= this.getWritableDatabase();
-String querystring="DElETE FROM "+CUSTOMER_TABLE+" Where "+COLUMN_ID+"="+customerModel.getId();
+String querystring="DElETE FROM "+CUSTOMER_TABLE+" Where "+COLUMN_ID+"="+customerModelid;
         Cursor cursor = db.rawQuery(querystring, null);
         if(cursor.moveToFirst()){
             return true;
